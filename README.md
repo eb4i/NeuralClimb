@@ -1,4 +1,4 @@
-# Climbing Holds - Detection and Classification (still to do!)
+# Climbing Holds - Detection and Classification
 
 *CS407 - The Beta Creators*
 
@@ -19,5 +19,9 @@
 - `Example.py` runs `holdDetector.py`
 - Some experimentation was done to narrow down the parameters for best detection (e.g. modifying Gaussian kernel size) - 
 	`Example2.py` runs `holdDetector2.py` which takes another approach to Canny edge detection (takes into account median of image).
+
+- Finds most holds, but not all (heavily influenced by quality and resolution of provided image)
+- ** CLASSIFICATION to be completed in `NeuralClimb/Hold_Classification`**
+
 - If you have any more questions, pls msg me @tames_jam x
 
