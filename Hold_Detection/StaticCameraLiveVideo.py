@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import cv2
-from holdDetector import findHolds, findColors, plotColors
-cap = cv2.VideoCapture('C:/Users/SeanC/Documents/GitHub/NeuralClimb/Hold Detection/2D Space/TestVideo-clipped-converted.avi')
+from holdDetector import findHolds, findColors
+cap = cv2.VideoCapture('VideoTestTrimmed.mp4')
 
 
 ret, frame = cap.read()
@@ -32,7 +32,7 @@ while(cap.isOpened()):
         #mask[key.pt] =+25
         cv2.circle(mask2,(int(key.pt[1]),int(key.pt[0])),5,2,-1)
     
-    mask += 
+    # mask += 
     mask[mask > 0] = mask[mask > 0] - 1
 
     mask3 = mask2 > 200
