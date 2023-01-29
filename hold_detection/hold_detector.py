@@ -8,8 +8,17 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 def openImage():
-    # Open Image
-    file_path = openFile()
+    """
+        This function opens an image using OpenCV library and resizes it for faster processing.
+        Parameters:
+                    none
+        Returns:
+                 an image.
+    """
+    # Open Image, hardcoded for testing
+    # file_path = openFile()
+    file_path = "demo_beta_problems.jpeg"
+    # demo_beta_problems.jpeg | demo_image1.jpg
     img = cv2.imread(file_path,1)
 
     # Image can be resized to a standard size to speed up processing.
@@ -51,6 +60,18 @@ def overlay(img, canny, MIN_AREA = 30, MAX_AREA = 4000):
 """ Object detection """
 
 def buildDetector(minArea = 25):
+    """
+    This function builds and returns a blob detector using the OpenCV library. It sets up the parameters for the detector and
+    filters the blobs based on size, circularity, convexity and inertia.
+
+        Parameters:
+            minArea (int): The function takes one optional argument, minArea, which represents the minimum area for the blobs to be detected. The default value is 25.
+        Returns:
+            detector: The function returns the SimpleBlobDetector object that can be used to detect blobs in an image.
+
+        Reference: https://docs.opencv.org/4.x/d0/d7a/classcv_1_1SimpleBlobDetector.html
+    """
+
     # Setup SimpleBlobDetector parameters.
     params = cv2.SimpleBlobDetector_Params()
 
@@ -86,7 +107,17 @@ def buildDetector(minArea = 25):
     return detector
 
 
-def findHolds(img,detector = None):
+def findHolds(img, detector = None):
+    """
+    This function finds the holds in an image using a combination of edge detection, contour detection and blob detection.
+    
+        Parameters:
+            img (img): It takes in an image.
+            detector (cv2.SimpleBlobDetector class): An optional detector object, which should be of the cv2.SimpleBlobDetector class. If a detector is not provided, it will be built with default parameters. The default value is None.
+        Returns:
+            keypoints (): A list of the coordinates of the centers of the holds 
+            hulls (): A list of the convex hulls of the holds.
+"""
     blurred = blur(img, 5)
     grayscale = gray(blurred)
     canny = canny_edge_detection(grayscale)
@@ -109,7 +140,8 @@ def findHolds(img,detector = None):
 
     # Draws contours onto a blank canvas
     mask = np.zeros(img.shape,np.uint8)
-    cv2.drawContours(mask,hulls,-1,[255,255,255],-1)
+    cv2.drawContours(mask,contours_refined,-1,(255,255,255),-1)
+    # cv2.drawContours(mask,hulls,-1,(255,255,255),-1)
 
     showImage(mask)
 
@@ -118,6 +150,7 @@ def findHolds(img,detector = None):
         detector = buildDetector()
 
     keypoints = detector.detect(mask)
+    
     return keypoints, hulls
 
 # def is_contours_bad(keypoints):
@@ -181,7 +214,7 @@ def drawCircled(img, keypoints, contours):
 
 def drawOutlined(img, keypoints, contours):
     # Draws contours onto img
-    cv2.drawContours(img, contours, -1, [0, 0, 255], 2)
+    cv2.drawContours(img, contours, -1, (0, 0, 255), 2)
 
     #OpenCV uses BGR format, so that'll need to be reversed for display
     img = img[...,::-1]
@@ -227,6 +260,3 @@ def drawOutlined(img, keypoints, contours):
 
 #     plt.title("Color Space of Keypoints")
 #     plt.show()
-		
-
-
